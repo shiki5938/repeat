@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twitch VOD Looper</title>
+</head>
+<body>
+  <h2>Twitch VOD リピート再生（自動リロード）</h2>
+  <input type="text" id="vodUrl" placeholder="Twitch VODのURLを入力">
+  <button onclick="startLoop()">再生開始</button>
+  <div id="player"></div>
+
+  <script>
+    let intervalId;
+
+    function startLoop() {
+      clearInterval(intervalId);
+      const url = document.getElementById("vodUrl").value;
+      const videoId = url.split("/").pop();
+      const embedUrl = `https://player.twitch.tv/?video=${videoId}&parent=localhost&autoplay=true`;
+
+      function loadPlayer() {
+        document.getElementById("player").innerHTML = `
+          <iframe src="${embedUrl}" height="480" width="720" allowfullscreen></iframe>
+        `;
+      }
+
+      loadPlayer();
+      intervalId = setInterval(loadPlayer, 600000); // 10分ごとにリロード
+    }
+  </script>
+</body>
+</html>
